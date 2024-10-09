@@ -171,7 +171,7 @@ public class ExtendedDictionaryTests
         dict.Add("key2", 2, "value2");
         Console.WriteLine($"ContainsKey test: {dict.ContainsKey("key2")}");
 
-        // Тест перевірки наявності значення
+        // Тест перевірки наявності начення
         Console.WriteLine($"ContainsValue test: {dict.ContainsValue(2, "value2")}");
 
         // Тест індексатора
