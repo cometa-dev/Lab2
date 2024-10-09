@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
-using NUnit;
+using NUnit.Framework;
+
 public static class StringExtensions
 {
     public static string Reverse(this string str)
@@ -27,8 +28,43 @@ public static class ArrayExtensions
     }
 }
 
+[TestFixture]
 public class ExtensionMethodsTests
 {
+    [Test]
+    public void TestStringReverse()
+    {
+        string testString = "Hello, World!";
+        Assert.That(testString.Reverse(), Is.EqualTo("!dlroW ,olleH"));
+    }
+
+    [Test]
+    public void TestStringCountOccurrences()
+    {
+        string testString = "Hello, World!";
+        Assert.That(testString.CountOccurrences('l'), Is.EqualTo(3));
+    }
+
+    [Test]
+    public void TestArrayCountOccurrences()
+    {
+        int[] intArray = { 1, 2, 3, 4, 2, 3, 1, 5 };
+        Assert.That(intArray.CountOccurrences(2), Is.EqualTo(2));
+
+        string[] stringArray = { "apple", "banana", "apple", "cherry", "date", "banana" };
+        Assert.That(stringArray.CountOccurrences("apple"), Is.EqualTo(2));
+    }
+
+    [Test]
+    public void TestArrayUnique()
+    {
+        int[] intArray = { 1, 2, 3, 4, 2, 3, 1, 5 };
+        Assert.That(intArray.Unique(), Is.EqualTo(new[] { 1, 2, 3, 4, 5 }));
+
+        string[] stringArray = { "apple", "banana", "apple", "cherry", "date", "banana" };
+        Assert.That(stringArray.Unique(), Is.EqualTo(new[] { "apple", "banana", "cherry", "date" }));
+    }
+
     public static void RunTests()
     {
         // Тести для методів розширення String

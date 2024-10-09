@@ -1,7 +1,7 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NUnit.Framework;
 
 namespace Lab2
 {
@@ -62,7 +62,7 @@ namespace Lab2
                     }
                 }
             };
-
+            
             var carsWithFourPassengers = cars.Where(c => c.PassengerCount == 4);
             foreach (var car in carsWithFourPassengers)
             {
@@ -117,5 +117,82 @@ namespace Lab2
         public string Name { get; set; }
         public int Quantity { get; set; }
         public string Description { get; set; }
+    }
+
+    [TestFixture]
+    public class UnitTests
+    {
+        [Test]
+        public void TestElementsWithTwo()
+        {
+            string[] A = { "12", "34", "52", "78", "90" };
+            var elementsWithTwo = A.Where(s => s.Contains('2'));
+            Assert.That(elementsWithTwo, Is.EqualTo(new[] { "12", "52" }));
+        }
+
+        [Test]
+        public void TestPositiveElements()
+        {
+            int[] B = { 2, -7, -10, 6, 7, 9, 3 };
+            var positiveElements = B.Where(n => n > 0);
+            Assert.That(positiveElements, Is.EqualTo(new[] { 2, 6, 7, 9, 3 }));
+        }
+
+        [Test]
+        public void TestYellowShades()
+        {
+            string[] C = { "Light Green", "Red", "Green", "Yellow", "Purple", "Dark Green", "Light Red", "Dark Red", "Dark Yellow", "Light Yellow" };
+            var yellowShades = C.Where(c => c.Contains("Yellow"));
+            Assert.That(yellowShades, Is.EqualTo(new[] { "Yellow", "Dark Yellow", "Light Yellow" }));
+        }
+
+        [Test]
+        public void TestCarsWithFourPassengers()
+        {
+            var cars = new List<Car>
+            {
+                new Car { Model = "Sedan", PassengerCount = 4, Passengers = new List<Passenger>
+                    {
+                        new Passenger { Gender = "Male", Age = 35 },
+                        new Passenger { Gender = "Female", Age = 28 },
+                        new Passenger { Gender = "Male", Age = 42 },
+                        new Passenger { Gender = "Female", Age = 19 }
+                    }
+                },
+                new Car { Model = "SUV", PassengerCount = 5, Passengers = new List<Passenger>() },
+            };
+
+            var carsWithFourPassengers = cars.Where(c => c.PassengerCount == 4);
+            Assert.That(carsWithFourPassengers.Count(), Is.EqualTo(1));
+            Assert.That(carsWithFourPassengers.First().Model, Is.EqualTo("Sedan"));
+        }
+
+        [Test]
+        public void TestProductsWithLowQuantity()
+        {
+            var products = new List<Product>
+            {
+                new Product { Name = "Apple", Quantity = 3, Description = "Fresh fruit" },
+                new Product { Name = "Bread", Quantity = 2, Description = "Whole grain" },
+                new Product { Name = "Milk", Quantity = 1, Description = "Low fat" },
+                new Product { Name = "Cheese", Quantity = 4, Description = "Cheddar" },
+                new Product { Name = "Orange", Quantity = 5, Description = "Fresh fruit" }
+            };
+
+            var productsWithLowQuantity = products.Where(p => p.Quantity < 5);
+            Assert.That(productsWithLowQuantity.Count(), Is.EqualTo(4));
+            Assert.That(productsWithLowQuantity.Select(p => p.Name), Is.EqualTo(new[] { "Apple", "Bread", "Milk", "Cheese" }));
+        }
+
+        [Test]
+        public void TestCombinedCars()
+        {
+            List<string> myCars = new List<string> { "Yugo", "Aztec", "BMW" };
+            List<string> yourCars = new List<string> { "BMW", "Saab", "Aztec" };
+            
+            var combinedCars = myCars.Concat(yourCars);
+            
+            Assert.That(combinedCars, Is.EqualTo(new[] { "Yugo", "Aztec", "BMW", "BMW", "Saab", "Aztec" }));
+        }
     }
 }
